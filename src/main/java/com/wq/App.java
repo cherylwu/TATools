@@ -1,7 +1,9 @@
 package com.wq;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,13 +15,34 @@ public class App {
     static String ANSWER_PATH = "C:/test/answer";
     static String STUDENT_INFO = "C:/students/studentInfo.txt";
     static Map<String, String> students = new HashMap<>();
+    static List<String> studentApp = new ArrayList<>();
 
     public static void main(String[] args) {
 
         createDir();
         getStudentInfo();
         batchCreatDir();
-        // downloadApp();
+        downloadApp();
+        execute();
+    }
+
+    private static void execute() {
+        String path = "";
+        Runtime rt = Runtime.getRuntime();
+        String command = "";
+        for (String app : studentApp) {
+            path = app + "/" + "WordCount" + "/BIN/";
+            command = path + "wc.exe " + "-c ../../../../testCase/file1.c";
+            try {
+                System.out.println(command);
+                rt.exec(command, null, new File(path));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                continue;
+
+            }
+        }
     }
 
     public static void createDir() {
@@ -39,6 +62,7 @@ public class App {
             System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
             String subDir = entry.getKey() + "_" + entry.getValue().substring(19);
             new File(APP_PATH + "/" + subDir).mkdirs();
+            studentApp.add(APP_PATH + "/" + subDir);
         }
     }
 
@@ -73,9 +97,15 @@ public class App {
             Runtime rt = Runtime.getRuntime();
             String command = "git clone " + entry.getValue() + "/WordCount.git";
             try {
-                rt.exec(command, null, new File(APP_PATH + "/" + subDir));
+                Process proc = rt.exec(command, null, new File(APP_PATH + "/" + subDir));
+                System.out.println(proc.waitFor());
             } catch (IOException e) {
+
                 e.printStackTrace();
+                continue;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                continue;
             }
 
         }
