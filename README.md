@@ -23,9 +23,13 @@
 
 
 第一个问题：
-![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319205027835-232119533.png)
+![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319210756789-1271431330.png)
 
-由上图可知，API需要以下参数
+由上图可知，请求API为：
+
+http://www.cnblogs.com/mvc/blog/GetComments.aspx?postId=8495419&blogApp=cherylwu&pageIndex=0&anchorCommentId=0&_=1521464785265
+
+需要以下参数
 
 1. postId: 8495419
 2. blogApp: cherylwu
@@ -36,11 +40,9 @@
 
 
 第1个参数postId
-![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319205800731-1565599803.png)
-这里获取
-
+![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319211001886-1501693017.png)
 第2个参数blogApp
-![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319205655656-1068449063.png)
+![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319210913182-620364239.png)
 在这里获取
 
 第3个参数pageIndex为页码，因为博客园评论为50条一页，学生人数大概三十人，所以一页数据足够，后续考虑分页逻辑。
