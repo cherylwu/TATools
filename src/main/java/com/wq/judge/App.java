@@ -1,4 +1,4 @@
-package com.wq;
+package com.wq.judge;
 
 import java.io.*;
 import java.util.ArrayList;
