@@ -24,6 +24,11 @@ public class App {
         batchCreatDir();
         downloadApp();
         execute();
+        checkAnswer();
+    }
+
+    private static void checkAnswer() {
+
     }
 
     private static void execute() {
@@ -32,7 +37,7 @@ public class App {
         String command = "";
         for (String app : studentApp) {
             path = app + "/" + "WordCount" + "/BIN/";
-            command = path + "wc.exe " + "-c ../../../../testCase/file1.c";
+            command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
             try {
                 System.out.println(command);
                 rt.exec(command, null, new File(path));
@@ -46,9 +51,12 @@ public class App {
     }
 
     public static void createDir() {
-
+        File appPath = new File(APP_PATH);
         try {
             new File(ROOT_PATH).mkdirs();
+            if (appPath.exists()) {
+                FileUtil.deleteDir(appPath);
+            }
             new File(APP_PATH).mkdirs();
             new File(ANSWER_PATH).mkdirs();
         } catch (Exception e) {
@@ -89,7 +97,9 @@ public class App {
 
     }
 
-    // TODO 待优化 批量下载github项目时需要登录验证
+    /*
+     ** 批量下载同学作业
+     */
     public static void downloadApp() {
         for (Map.Entry<String, String> entry : students.entrySet()) {
             String subDir = entry.getKey() + "_" + entry.getValue().substring(19);
@@ -97,10 +107,10 @@ public class App {
             Runtime rt = Runtime.getRuntime();
             String command = "git clone " + entry.getValue() + "/WordCount.git";
             try {
+                System.out.println(command);
                 Process proc = rt.exec(command, null, new File(APP_PATH + "/" + subDir));
                 System.out.println(proc.waitFor());
             } catch (IOException e) {
-
                 e.printStackTrace();
                 continue;
             } catch (InterruptedException e) {
