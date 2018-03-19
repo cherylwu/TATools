@@ -1,7 +1,94 @@
-# CODE
+# 助教小工具
+
+
+
+## CODE
 [TATools](https://github.com/cherylwu/TATools)
 
-# DONE
+
+### 从博客爬取学生信息(已完成)
+
+#### 作业要求
+
+将个人技术博客和Git账号通过评论的形式发布（在本帖下发布评论即可）。
+格式：Github账号 学号（后5位） 博客地址，三者以空格分隔，
+示例：https://github.com/SivilTaram 02101 http://www.cnblogs.com/easteast/
+
+[抓取学生信息地址](http://www.cnblogs.com/cherylwu/p/8495419.html)
+
+
+#### 思路
+1. Chrome调试模式下，查看获取评论的API
+2. 查看API需要的参数，通过抓取当前页面来找到API需要的参数
+
+
+第一个问题：
+![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319205027835-232119533.png)
+
+由上图可知，API需要以下参数
+
+1. postId: 8495419
+2. blogApp: cherylwu
+3. pageIndex: 0
+4. anchorCommentId: 0
+5. _: 1521463915572
+
+
+
+第1个参数postId
+![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319205800731-1565599803.png)
+这里获取
+
+第2个参数blogApp
+![](https://images2018.cnblogs.com/blog/682120/201803/682120-20180319205655656-1068449063.png)
+在这里获取
+
+第3个参数pageIndex为页码，因为博客园评论为50条一页，学生人数大概三十人，所以一页数据足够，后续考虑分页逻辑。
+
+第4个参数anchorCommentId没有搞清楚啥意思，所以就按原先的设置为0
+
+最后一个参数 _ 很显然是时间戳，比较好获取
+```java
+new Date().getTime()
+```
+
+抓取学生的信息结果如下：
+
+https://github.com/fqd332 17085 http://www.cnblogs.com/RuanjianFqd/
+https://github.com/lzwk 17079 http://www.cnblogs.com/MrZhang145689/
+https://github.com/FangStars 17090 http://www.cnblogs.com/FangStar/
+https://github.com/BillCYJ 17093 http://www.cnblogs.com/billcyj/
+https://github.com/HastingsX 17087 http://www.cnblogs.com/zhiwei97/
+https://github.com/chaseMengdi 17070 https://www.cnblogs.com/BoqianLiu/
+https://github.com/liuqiang666 17080 http://www.cnblogs.com/liuqsw/
+https://github.com/JarrySmith 17086 http://www.cnblogs.com/Jarry-smith/
+https://github.com/yangwj001 17073 http://www.cnblogs.com/RuanjianYwj/
+https://github.com/792450735 17088 http://www.cnblogs.com/Nathon1Blog/
+https://github.com/yuyuyu960818 17092 http://www.cnblogs.com/yuyuyu96/
+https://github.com/jiaxuansun 17077 http://www.cnblogs.com/ss07/
+https://github.com/zhaozhiyu/zhaoshidaye 17095 http://www.cnblogs.com/zhaoshidaye/
+https://github.com/handsomesnail 17071 http://www.cnblogs.com/handsomesnail
+https://github.com/HYYYYYZ/- 17068 http://www.cnblogs.com/HYYYYYZ/
+https://github.com/jianjake 17091 http://www.cnblogs.com/jakejian/
+https://github.com/husterSyy/ 17067 http://www.cnblogs.com/husterSyy/
+https://github.com/MasonWater 17072 http://www.cnblogs.com/hayitutu/
+https://github.com/Middamn 17074 http://www.cnblogs.com/middamn/
+https://github.com/Hoyifei 17078 http://www.cnblogs.com/Komeiji-Koishi/
+https://github.com/hddddd 17083 http://www.cnblogs.com/hddddd/
+https://github.com/wwwwu 16081 http://www.cnblogs.com/mengue/
+https://github.com/CG0317 17075 http://www.cnblogs.com/kkdzz/
+https://github.com/Aabon00 17082 http://www.cnblogs.com/dilidiligy/
+https://github.com/LantyrLYL 90035 http://www.cnblogs.com/Lantyr/
+https://github.com/mrlandiao 17081 http://www.cnblogs.com/mrlandiao/
+https://github.com/skz12345 17069 http://www.cnblogs.com/fleshbone/
+https://github.com/245553473 17076 http://www.cnblogs.com/carroll/
+https://github.com/aaliku 17084 http://www.cnblogs.com/17084aaliku/
+https://github.com/mostannno 17089 http://www.cnblogs.com/miaoTer/
+https://github.com/hcy6668 17094 http://www.cnblogs.com/Mitchell977/
+0
+
+
+### 自动执行exe文件(进行中)
 1. 创建下载exe文件的根目录、
     - test
         - apps
