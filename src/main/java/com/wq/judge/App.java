@@ -10,12 +10,16 @@ import java.util.Map;
  * Hello world!
  */
 public class App {
+
     static String ROOT_PATH = "C:/test";
     static String APP_PATH = "C:/test/apps";
     static String ANSWER_PATH = "C:/test/answer";
     static String STUDENT_INFO = "C:/students/studentInfo.txt";
+    static String TEST_CASE = "C:/test/testcase/command.txt";
+
     static Map<String, String> students = new HashMap<>();
     static List<String> studentApp = new ArrayList<>();
+    //static List<String> testCommand = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -39,25 +43,65 @@ public class App {
      */
     private static void execute() {
         String path = "";
+        String projectName = "";
+        int startChar;
+        int endChar;
         Runtime rt = Runtime.getRuntime();
         String command = "";
+
         for (String app : studentApp) {
+            //获取学生项目名
+            startChar = app.indexOf("/",19);
+            endChar = app.lastIndexOf(".git");
+            projectName = app.substring(startChar, endChar);
             if (app.indexOf("handsomesnail") > -1) {
                 // TODO 获取同学项目目录下的BIN目录路径
-                path = app + "/" + "WordCount" + "/BIN/";
-                command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
-                try {
-                    System.out.println(command);
-                    rt.exec(command, null, new File(path));
+                path = app + "/" + projectName + "/BIN/";
+                //path = app + "/" + "WordCount" + "/BIN/";
+                // TODO 读取txt文件中的测试用例
+                //command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
 
+                File testCase = new File(TEST_CASE);
+                try {
+                    InputStreamReader reader = new InputStreamReader(new FileInputStream(testCase));
+                    BufferedReader br = new BufferedReader(reader);
+                    String line = br.readLine();
+                    while (line != null){
+
+                        //testCommand.add(line);
+                        command = path + line;
+                        System.out.println(command);
+                        rt.exec(command, null, new File(path));
+                        line = br.readLine();
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    continue;
-
-                }//https://github.com/chaseMengdi/Software-Quality-Test.git
+                }
+                //https://github.com/chaseMengdi/Software-Quality-Test.git
             }
 
         }
+    }
+
+    public static void readCommand() {
+        /*File testCase = new File(TEST_CASE);
+        try {
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(testCase));
+            BufferedReader br = new BufferedReader(reader);
+            String line = br.readLine();
+            while (line != null){
+                testCommand.add(line);
+                line = br.readLine();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
 
