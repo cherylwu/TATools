@@ -24,32 +24,46 @@ public class App {
         batchCreatDir();
         downloadApp();
         execute();
-        checkAnswer();
+        //checkAnswer();
     }
 
+    /**
+     * 对比执行答案和预期标准答案
+     */
     private static void checkAnswer() {
 
     }
 
+    /**
+     * 运行exe，测试测试用例wc.exe -c -l -w ../../../../testCase/file1.c
+     */
     private static void execute() {
         String path = "";
         Runtime rt = Runtime.getRuntime();
         String command = "";
         for (String app : studentApp) {
-            path = app + "/" + "WordCount" + "/BIN/";
-            command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
-            try {
-                System.out.println(command);
-                rt.exec(command, null, new File(path));
+            if (app.indexOf("handsomesnail") > -1) {
+                // TODO 获取同学项目目录下的BIN目录路径
+                path = app + "/" + "WordCount" + "/BIN/";
+                command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
+                try {
+                    System.out.println(command);
+                    rt.exec(command, null, new File(path));
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                continue;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    continue;
 
+                }//https://github.com/chaseMengdi/Software-Quality-Test.git
             }
+
         }
     }
 
+
+    /**
+     * 创建基础文件夹
+     */
     public static void createDir() {
         File appPath = new File(APP_PATH);
         try {
@@ -65,15 +79,28 @@ public class App {
         }
     }
 
+    /**
+     * 批量创建存放学生作业的文件夹
+     */
     public static void batchCreatDir() {
         for (Map.Entry<String, String> entry : students.entrySet()) {
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-            String subDir = entry.getKey() + "_" + entry.getValue().substring(19);
+            String url = entry.getValue();
+            System.out.println("Key = " + entry.getKey() + ", Value = " + url);
+            String subDir = "";
+            if (url.endsWith(".git")) {
+                subDir = entry.getKey() + "_" + url.substring(19, url.indexOf("/", 19));
+            } else {
+                subDir = entry.getKey() + "_" + url.substring(19);
+            }
+
             new File(APP_PATH + "/" + subDir).mkdirs();
             studentApp.add(APP_PATH + "/" + subDir);
         }
     }
 
+    /**
+     * 获取学生GitHub信息
+     */
     public static void getStudentInfo() {
         students.clear();
         File studentInfo = new File(STUDENT_INFO);
@@ -97,26 +124,32 @@ public class App {
 
     }
 
-    /*
-     ** 批量下载同学作业
+    /**
+     * 批量下载同学作业
      */
     public static void downloadApp() {
         for (Map.Entry<String, String> entry : students.entrySet()) {
-            String subDir = entry.getKey() + "_" + entry.getValue().substring(19);
+
 
             Runtime rt = Runtime.getRuntime();
-            String command = "git clone " + entry.getValue() + "/WordCount.git";
-            try {
-                System.out.println(command);
-                Process proc = rt.exec(command, null, new File(APP_PATH + "/" + subDir));
-                System.out.println(proc.waitFor());
-            } catch (IOException e) {
-                e.printStackTrace();
-                continue;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (entry.getValue().endsWith(".git")) {
+                String subDir = entry.getKey() + "_" + entry.getValue().substring(19, entry.getValue().indexOf("/", 19));
+                String command = "git clone " + entry.getValue();
+                try {
+                    System.out.println(command);
+                    Process proc = rt.exec(command, null, new File(APP_PATH + "/" + subDir));
+                    System.out.println(proc.waitFor());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    continue;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+            } else {
                 continue;
             }
+
 
         }
 

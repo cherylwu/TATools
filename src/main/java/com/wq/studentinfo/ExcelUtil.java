@@ -48,15 +48,15 @@ public class ExcelUtil {
         }
         System.out.println(file.getName());
         if (file.getName().endsWith("xlsx")) {
-            //处理ecxel2007
+            //处理Excel2007
             return readExcel2007(file);
         } else {
-            //处理ecxel2003
+            //处理Excel2003
             return readExcel2003(file);
         }
     }
 
-    /*
+    /**
      * @return 将返回结果存储在ArrayList内，存储结构与二位数组类似
      * lists.get(0).get(0)表示过去Excel中0行0列单元格
      */
@@ -72,9 +72,10 @@ public class ExcelUtil {
             for (int i = sheet.getFirstRowNum(), rowCount = 0; rowCount < sheet.getPhysicalNumberOfRows(); i++) {
                 row = sheet.getRow(i);
                 colList = new ArrayList<>();
+                //当读取行为空时
                 if (row == null) {
-                    //当读取行为空时
-                    if (i != sheet.getPhysicalNumberOfRows()) {//判断是否是最后一行
+                    //判断是否是最后一行
+                    if (i != sheet.getPhysicalNumberOfRows()) {
                         rowList.add(colList);
                     }
                     continue;
@@ -83,9 +84,10 @@ public class ExcelUtil {
                 }
                 for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
                     cell = row.getCell(j);
+                    //当该单元格为空
                     if (cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK) {
-                        //当该单元格为空
-                        if (j != row.getLastCellNum()) {//判断是否是该行中最后一个单元格
+                        //判断是否是该行中最后一个单元格
+                        if (j != row.getLastCellNum()) {
                             colList.add("");
                         }
                         continue;
@@ -137,7 +139,8 @@ public class ExcelUtil {
                 colList = new ArrayList<Object>();
                 if (row == null) {
                     //当读取行为空时
-                    if (i != sheet.getPhysicalNumberOfRows()) {//判断是否是最后一行
+                    //判断是否是最后一行
+                    if (i != sheet.getPhysicalNumberOfRows()) {
                         rowList.add(colList);
                     }
                     continue;
@@ -148,7 +151,8 @@ public class ExcelUtil {
                     cell = row.getCell(j);
                     if (cell == null || cell.getCellType() == HSSFCell.CELL_TYPE_BLANK) {
                         //当该单元格为空
-                        if (j != row.getLastCellNum()) {//判断是否是该行中最后一个单元格
+                        //判断是否是该行中最后一个单元格
+                        if (j != row.getLastCellNum()) {
                             colList.add("");
                         }
                         continue;
@@ -218,7 +222,8 @@ public class ExcelUtil {
             e.printStackTrace();
         }
         byte[] content = os.toByteArray();
-        File file = new File(path);//Excel文件生成后存储的位置。
+        //Excel文件生成后存储的位置
+        File file = new File(path);
         OutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
