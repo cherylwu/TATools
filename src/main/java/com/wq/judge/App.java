@@ -20,6 +20,7 @@ public class App {
     static Map<String, String> students = new HashMap<>();
     static List<String> studentApp = new ArrayList<>();
     //static List<String> testCommand = new ArrayList<>();
+    static File[] fileLists;
 
     public static void main(String[] args) {
 
@@ -27,8 +28,7 @@ public class App {
         getStudentInfo();
         batchCreatDir();
         downloadApp();
-
-        //execute();
+        execute();
         //checkAnswer();
     }
 
@@ -60,6 +60,7 @@ public class App {
                 projectName = app.substring(startChar, endChar);*/
                 File file = new File(app);
                 printFile(file);
+                System.out.println(fileLists[0]);
                 // TODO 获取同学项目目录下的BIN目录路径
                 path = app + "/" + projectName + "/BIN/";
                 System.out.println(path);
@@ -115,7 +116,7 @@ public class App {
         if (file.isFile()) {
             System.out.println("您给定的是一个文件");
         } else {
-            File[] fileLists = file.listFiles();
+            fileLists = file.listFiles();
             // 循环遍历这个集合内容
             for (int i = 0; i < fileLists.length; i++) {
                 System.out.println(fileLists[i].getName());
