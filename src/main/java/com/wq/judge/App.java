@@ -27,7 +27,8 @@ public class App {
         getStudentInfo();
         batchCreatDir();
         downloadApp();
-        execute();
+
+        //execute();
         //checkAnswer();
     }
 
@@ -51,12 +52,17 @@ public class App {
 
         for (String app : studentApp) {
             //获取学生项目名
-            startChar = app.indexOf("/",19);
-            endChar = app.lastIndexOf(".git");
-            projectName = app.substring(startChar, endChar);
+
             if (app.indexOf("handsomesnail") > -1) {
+                /*startChar = app.indexOf("/",19);
+                System.out.println(startChar);
+                endChar = app.lastIndexOf(".git");
+                projectName = app.substring(startChar, endChar);*/
+                File file = new File(app);
+                printFile(file);
                 // TODO 获取同学项目目录下的BIN目录路径
                 path = app + "/" + projectName + "/BIN/";
+                System.out.println(path);
                 //path = app + "/" + "WordCount" + "/BIN/";
                 // TODO 读取txt文件中的测试用例
                 //command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
@@ -71,7 +77,7 @@ public class App {
                         //testCommand.add(line);
                         command = path + line;
                         System.out.println(command);
-                        rt.exec(command, null, new File(path));
+                        // rt.exec(command, null, new File(path));
                         line = br.readLine();
                     }
 
@@ -102,6 +108,23 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
+
+    public static void printFile(File file) {
+        // 判断给定目录是否是一个合法的目录，如果不是，输出提示
+        if (file.isFile()) {
+            System.out.println("您给定的是一个文件");
+        } else {
+            File[] fileLists = file.listFiles();
+            // 循环遍历这个集合内容
+            for (int i = 0; i < fileLists.length; i++) {
+                System.out.println(fileLists[i].getName());
+                //判断元素是不是目录,若，继续调用本方法来输出其子目录
+                if (fileLists[i].isDirectory()) {
+                    printFile(fileLists[i]);
+                }
+            }
+        }
     }
 
 
@@ -138,7 +161,9 @@ public class App {
             }
 
             new File(APP_PATH + "/" + subDir).mkdirs();
+            System.out.println(APP_PATH + "/" + subDir);
             studentApp.add(APP_PATH + "/" + subDir);
+
         }
     }
 
