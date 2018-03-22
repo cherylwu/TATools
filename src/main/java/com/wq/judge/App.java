@@ -52,7 +52,6 @@ public class App {
 
         for (String app : studentApp) {
             //获取学生项目名
-
             if (app.indexOf("handsomesnail") > -1) {
                 /*startChar = app.indexOf("/",19);
                 System.out.println(startChar);
