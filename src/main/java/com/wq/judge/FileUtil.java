@@ -41,6 +41,23 @@ public class FileUtil {
         }
     }
 
+    public static List<File> findSubFiles(File file) {
+        List<File> fileList = new ArrayList<>();
+        if (file == null || !file.exists()) {
+            return fileList;
+        } else {
+            String[] names = file.list();
+
+            for (String name : names) {
+                File subFile = new File(file.getAbsolutePath(), name);
+                if (!subFile.isDirectory()) {
+                    fileList.add(subFile);
+                }
+            }
+            return fileList;
+        }
+    }
+
     /**
      * 获取文件内容，逐行获取
      *

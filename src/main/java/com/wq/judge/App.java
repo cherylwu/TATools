@@ -1,8 +1,12 @@
 package com.wq.judge;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +28,7 @@ public class App {
 
     static Map<String, String> students = new HashMap<>();
     static List<String> studentApp = new ArrayList<>();
+    static List<String> resultPath = new ArrayList<>();
     static File[] fileLists;
 
     public static void main(String[] args) {
@@ -33,14 +38,54 @@ public class App {
         batchCreatDir();
         downloadApp();
         execute();
-        //checkAnswer();
+
+
+        checkAnswers();
+    }
+
+    private static void checkAnswers() {
+        for (String path : resultPath) {
+            List<File> results = FileUtil.findSubFiles(new File(path));
+            try {
+                new File(path, "score.txt").createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (File result : results) {
+                if (result.getName().indexOf("result") > 0) {
+                    System.out.println(result.getName().split("_")[0] + "_answer.txt");
+                    if (checkAnswer(result, new File(ANSWER_PATH, result.getName().split("_")[0] + "_answer.txt"))) {
+                        try {
+                            Files.write(Paths.get(new File(path, "score.txt").getPath()), (result.getName() + ": correct!").getBytes(), StandardOpenOption.APPEND);
+                            Files.write(Paths.get(new File(path, "score.txt").getPath()), System.getProperty("line.separator").getBytes(), StandardOpenOption.APPEND);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            Files.write(Paths.get(new File(path, "score.txt").getPath()), (result.getName() + ": wrong!\n").getBytes(), StandardOpenOption.APPEND);
+                            Files.write(Paths.get(new File(path, "score.txt").getPath()), System.getProperty("line.separator").getBytes(), StandardOpenOption.APPEND);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     /**
      * 对比执行答案和预期标准答案
      */
-    private static void checkAnswer() {
-
+    private static boolean checkAnswer(File result, File answer) {
+        try {
+            return FileUtils.contentEquals(result, answer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -137,6 +182,7 @@ public class App {
             new File(RESULT_PATH + "/" + subDir).mkdirs();
             System.out.println(APP_PATH + "/" + subDir);
             studentApp.add(APP_PATH + "/" + subDir);
+            resultPath.add(RESULT_PATH + "/" + subDir);
 
         }
     }
