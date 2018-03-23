@@ -1,10 +1,14 @@
 package com.wq.judge;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
  * Hello world!
@@ -14,6 +18,7 @@ public class App {
     static String ROOT_PATH = "C:/test";
     static String APP_PATH = "C:/test/apps";
     static String ANSWER_PATH = "C:/test/answer";
+    static String RESULT_PATH = "C:/test/result";
     static String STUDENT_INFO = "C:/students/studentInfo.txt";
     static String TEST_CASE = "C:/test/testCase/test.txt";
 
@@ -47,7 +52,7 @@ public class App {
             File file = new File(app);
             List<File> subDirs = FileUtil.findSubDirs(file);
             if (!subDirs.isEmpty()) {
-                path = subDirs.get(0) + "/BIN/";
+                path = subDirs.get(0) + "\\BIN\\";
                 doTest(path, TEST_CASE);
             }
         }
@@ -63,12 +68,20 @@ public class App {
             Runtime rt = Runtime.getRuntime();
             try {
                 Process proc = rt.exec(path + command, null, new File(path));
-                System.out.println(proc.waitFor());
-                System.out.println(path + "result.txt");
+                proc.waitFor();
+
+
+                //System.out.println(path + "result.txt");
                 File result = new File(path, "result.txt");
 
                 if (result.exists()) {
-                    result.renameTo(new File(path, flag + "_result.txt"));
+                    System.out.println(path);
+                    System.out.println(redirectToResultPath(path));
+                    File resultPath = new File(redirectToResultPath(path));
+                    if (!resultPath.exists()) {
+                        resultPath.mkdirs();
+                    }
+                    result.renameTo(new File(redirectToResultPath(path) + "\\" + flag + "_result.txt"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -79,18 +92,32 @@ public class App {
             }
         }
     }
+
+    public static String redirectToResultPath(String binPath) {
+        if (StringUtils.isNotEmpty(binPath)) {
+            return (RESULT_PATH + "/" + binPath.substring(13, binPath.indexOf("\\", 13))).replace("/", "\\");
+        } else {
+            return EMPTY;
+        }
+    }
+
     /**
      * 创建基础文件夹
      */
     public static void createDir() {
         File appPath = new File(APP_PATH);
+        File resPath = new File(RESULT_PATH);
         try {
             new File(ROOT_PATH).mkdirs();
             if (appPath.exists()) {
                 FileUtil.deleteDir(appPath);
             }
+            if (resPath.exists()) {
+                FileUtil.deleteDir(resPath);
+            }
             new File(APP_PATH).mkdirs();
             new File(ANSWER_PATH).mkdirs();
+            new File(RESULT_PATH).mkdirs();
         } catch (Exception e) {
             e.printStackTrace();
             return;
