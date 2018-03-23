@@ -67,6 +67,7 @@ public class App {
             flag++;
             Runtime rt = Runtime.getRuntime();
             try {
+                System.out.println(path + command);
                 Process proc = rt.exec(path + command, null, new File(path));
                 proc.waitFor();
 
@@ -75,13 +76,7 @@ public class App {
                 File result = new File(path, "result.txt");
 
                 if (result.exists()) {
-                    System.out.println(path);
-                    System.out.println(redirectToResultPath(path));
-                    File resultPath = new File(redirectToResultPath(path));
-                    if (!resultPath.exists()) {
-                        resultPath.mkdirs();
-                    }
-                    result.renameTo(new File(redirectToResultPath(path) + "\\" + flag + "_result.txt"));
+                    result.renameTo(new File(redirectToResultPath(path), flag + "_result.txt"));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -139,6 +134,7 @@ public class App {
             }
 
             new File(APP_PATH + "/" + subDir).mkdirs();
+            new File(RESULT_PATH + "/" + subDir).mkdirs();
             System.out.println(APP_PATH + "/" + subDir);
             studentApp.add(APP_PATH + "/" + subDir);
 
