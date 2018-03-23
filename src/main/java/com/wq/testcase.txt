@@ -1,5 +1,0 @@
-wc.exe  -c ../../../../testCase/file1.c
-wc.exe  -w ../../../../testCase/file1.c
-wc.exe  -l ../../../../testCase/file1.c
-
-wc.exe  -c -l -w ../../../../testCase/file1.c

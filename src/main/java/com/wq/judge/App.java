@@ -15,11 +15,10 @@ public class App {
     static String APP_PATH = "C:/test/apps";
     static String ANSWER_PATH = "C:/test/answer";
     static String STUDENT_INFO = "C:/students/studentInfo.txt";
-    static String TEST_CASE = "C:/test/testcase/command.txt";
+    static String TEST_CASE = "C:/test/testCase/test.txt";
 
     static Map<String, String> students = new HashMap<>();
     static List<String> studentApp = new ArrayList<>();
-    //static List<String> testCommand = new ArrayList<>();
     static File[] fileLists;
 
     public static void main(String[] args) {
@@ -44,90 +43,42 @@ public class App {
      */
     private static void execute() {
         String path = "";
-        String projectName = "";
-        int startChar;
-        int endChar;
-        Runtime rt = Runtime.getRuntime();
-        String command = "";
-
         for (String app : studentApp) {
-            //获取学生项目名
-            if (app.indexOf("handsomesnail") > -1) {
-                /*startChar = app.indexOf("/",19);
-                System.out.println(startChar);
-                endChar = app.lastIndexOf(".git");
-                projectName = app.substring(startChar, endChar);*/
-                File file = new File(app);
-                printFile(file);
-                System.out.println(fileLists[0]);
-                // TODO 获取同学项目目录下的BIN目录路径
-                path = app + "/" + projectName + "/BIN/";
-                System.out.println(path);
-                //path = app + "/" + "WordCount" + "/BIN/";
-                // TODO 读取txt文件中的测试用例
-                //command = path + "wc.exe " + "-c -l -w ../../../../testCase/file1.c";
-
-                File testCase = new File(TEST_CASE);
-                try {
-                    InputStreamReader reader = new InputStreamReader(new FileInputStream(testCase));
-                    BufferedReader br = new BufferedReader(reader);
-                    String line = br.readLine();
-                    while (line != null){
-
-                        //testCommand.add(line);
-                        command = path + line;
-                        System.out.println(command);
-                        // rt.exec(command, null, new File(path));
-                        line = br.readLine();
-                    }
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //https://github.com/chaseMengdi/Software-Quality-Test.git
-            }
-
-        }
-    }
-
-    public static void readCommand() {
-        /*File testCase = new File(TEST_CASE);
-        try {
-            InputStreamReader reader = new InputStreamReader(new FileInputStream(testCase));
-            BufferedReader br = new BufferedReader(reader);
-            String line = br.readLine();
-            while (line != null){
-                testCommand.add(line);
-                line = br.readLine();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    public static void printFile(File file) {
-        // 判断给定目录是否是一个合法的目录，如果不是，输出提示
-        if (file.isFile()) {
-            System.out.println("您给定的是一个文件");
-        } else {
-            fileLists = file.listFiles();
-            // 循环遍历这个集合内容
-            for (int i = 0; i < fileLists.length; i++) {
-                System.out.println(fileLists[i].getName());
-                //判断元素是不是目录,若，继续调用本方法来输出其子目录
-                if (fileLists[i].isDirectory()) {
-                    printFile(fileLists[i]);
-                }
+            File file = new File(app);
+            List<File> subDirs = FileUtil.findSubDirs(file);
+            if (!subDirs.isEmpty()) {
+                path = subDirs.get(0) + "/BIN/";
+                doTest(path, TEST_CASE);
             }
         }
     }
 
+    private static void doTest(String path, String testCaePath) {
+        System.out.println(testCaePath);
+        File testCase = new File(testCaePath);
+        List<String> testCommand = FileUtil.getContentByline(testCase);
+        int flag = 0;
+        for (String command : testCommand) {
+            flag++;
+            Runtime rt = Runtime.getRuntime();
+            try {
+                Process proc = rt.exec(path + command, null, new File(path));
+                System.out.println(proc.waitFor());
+                System.out.println(path + "result.txt");
+                File result = new File(path, "result.txt");
 
+                if (result.exists()) {
+                    result.renameTo(new File(path, flag + "_result.txt"));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                continue;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+    }
     /**
      * 创建基础文件夹
      */
@@ -198,14 +149,12 @@ public class App {
      */
     public static void downloadApp() {
         for (Map.Entry<String, String> entry : students.entrySet()) {
-
-
             Runtime rt = Runtime.getRuntime();
             if (entry.getValue().endsWith(".git")) {
                 String subDir = entry.getKey() + "_" + entry.getValue().substring(19, entry.getValue().indexOf("/", 19));
                 String command = "git clone " + entry.getValue();
                 try {
-                    System.out.println(command);
+                    System.out.println(APP_PATH + "/" + subDir);
                     Process proc = rt.exec(command, null, new File(APP_PATH + "/" + subDir));
                     System.out.println(proc.waitFor());
                 } catch (IOException e) {
