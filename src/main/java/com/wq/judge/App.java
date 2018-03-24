@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
- * Hello world!
+ * @author wuqian
  */
 public class App {
 
@@ -29,7 +29,6 @@ public class App {
     static Map<String, String> students = new HashMap<>();
     static List<String> studentApp = new ArrayList<>();
     static List<String> resultPath = new ArrayList<>();
-    static File[] fileLists;
 
     public static void main(String[] args) {
 

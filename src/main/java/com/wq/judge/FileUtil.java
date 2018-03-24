@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author wuqian
+ */
 public class FileUtil {
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
