@@ -11,7 +11,6 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class App implements PageProcessor {
@@ -31,7 +30,7 @@ public class App implements PageProcessor {
         String blogApp = html.substring(html.indexOf("currentBlogApp = '") + 18, html.indexOf("', cb_enable_mathjax")).trim();
         String postid = html.substring(html.indexOf("cb_entryId=") + 11, html.indexOf(",cb_blogApp"));
 
-        Long ts = new Date().getTime();
+        Long ts = System.currentTimeMillis();
 
 
         Spider.create(new App()).addUrl("http://www.cnblogs.com/mvc/blog/GetComments.aspx?postid=" + postid + "&blogApp=" + blogApp + "&pageIndex=1&anchorCommentId=0&_=" + ts,

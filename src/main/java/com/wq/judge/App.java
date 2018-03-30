@@ -27,7 +27,7 @@ public class App {
     static String TEST_CASE = "C:/test/testCase/test.txt";
 
     static Map<String, String> students = new HashMap<>();
-    static List<String> studentApp = new ArrayList<>();
+
     static List<String> resultPath = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -35,11 +35,11 @@ public class App {
         createDir();
         getStudentInfo();
         batchCreatDir();
-        downloadApp();
+        /*downloadApp();
         execute();
 
 
-        checkAnswers();
+        checkAnswers();*/
     }
 
     private static void checkAnswers() {
@@ -91,6 +91,7 @@ public class App {
      * 运行exe，测试测试用例wc.exe -c -l -w ../../../../testCase/file1.c
      */
     private static void execute() {
+        List<String> studentApp = new ArrayList<>();
         String path = "";
         for (String app : studentApp) {
             File file = new File(app);
@@ -167,6 +168,7 @@ public class App {
      * 批量创建存放学生作业的文件夹
      */
     public static void batchCreatDir() {
+        List<String> studentApp = new ArrayList<>();
         for (Map.Entry<String, String> entry : students.entrySet()) {
             String url = entry.getValue();
             System.out.println("Key = " + entry.getKey() + ", Value = " + url);
@@ -235,8 +237,6 @@ public class App {
             } else {
                 continue;
             }
-
-
         }
 
     }

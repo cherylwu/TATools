@@ -1,5 +1,6 @@
 package com.wq.judge;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -94,12 +95,15 @@ public class FileUtil {
     }
 
     public static void main(String[] args) {
-        // System.out.println(getContentByline(new File("C:\\test\\testCase\\testcase.txt")));
-        /*File file = new File("C:\\test\\testCase\\testcase.txt");
-        file.renameTo(new File("C:\\test\\testCase\\test.txt"));*/
-        System.out.println(App.redirectToResultPath("C:\\test\\apps\\17071_handsomesnail\\WordCount\\BIN"));
-        // System.out.println("C:\\test\\testCase\\test.txt");
-        //File file = new File("C:\\test\\testCase\\test.txt");
-        //file.renameTo(new File("C:\\test\\result\\17071_handsomesnail\\_result.txt"));
+        File file = new File("C:/test2/apps/");
+        if (file.exists()) {
+            try {
+                FileUtils.deleteDirectory(file);
+                file.mkdirs();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        file.mkdirs();
     }
 }
