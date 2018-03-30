@@ -121,9 +121,9 @@ https://github.com/hcy6668 17094 http://www.cnblogs.com/Mitchell977/
 
 7. 执行测试用例集
 
-### TODO 
+### update 2018-03-31
 - 多线程下载学生作业
-- 验证结果，计算通过率
+- 验证结果(字符串全匹配)
 
 
 ### 源码
