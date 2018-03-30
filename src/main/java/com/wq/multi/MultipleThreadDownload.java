@@ -56,12 +56,5 @@ public class MultipleThreadDownload {
 
     }
 
-    private static void buildFold(String number, String github) {
-        String subDir = number + "_" + github.substring(19, github.indexOf("/", 19));
-        File file = new File(APP_PATH + "/" + subDir);
-        if (file.exists()) {
-            file.delete();
-        }
-        file.mkdirs();
-    }
+
 }
