@@ -49,8 +49,11 @@ public class DownloadRunnable implements Runnable {
                 }
             }
             file.mkdirs();
+            long begin = System.currentTimeMillis();
             Process proc = rt.exec(command, null, new File(APP_PATH + "/" + subDir));
-            System.out.println(proc.waitFor());
+            proc.waitFor();
+            long end = System.currentTimeMillis();
+            System.out.println(subDir + "-->(Time:" + ((end - begin)) + "ms)");
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
 
