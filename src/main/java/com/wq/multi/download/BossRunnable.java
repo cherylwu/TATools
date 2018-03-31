@@ -1,4 +1,4 @@
-package com.wq.multi;
+package com.wq.multi.download;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -18,7 +18,8 @@ public class BossRunnable implements Runnable {
         try {
             this.countDownLatch.await();
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println("download finished!");
+        System.out.println("execute finished!");
     }
 }

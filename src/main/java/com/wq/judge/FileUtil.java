@@ -1,11 +1,12 @@
 package com.wq.judge;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.commons.io.FileUtils.deleteDirectory;
 
 /**
  * @author wuqian
@@ -81,7 +82,7 @@ public class FileUtil {
                     if (StringUtils.isNotEmpty(line)) {
                         content.add(line.trim());
                     }
-
+                    System.out.println("line ->" + line);
                     line = br.readLine();
                 }
             } catch (IOException e) {
@@ -94,16 +95,16 @@ public class FileUtil {
         }
     }
 
-    public static void main(String[] args) {
-        File file = new File("C:/test2/apps/");
+    public static void prepareEmptyDirectory(String path) throws IOException {
+        File file = new File(path);
         if (file.exists()) {
-            try {
-                FileUtils.deleteDirectory(file);
-                file.mkdirs();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            deleteDirectory(file);
         }
         file.mkdirs();
+    }
+
+    public static void main(String[] args) {
+        String testCase = "1 -c -l -w  ../../../../testCase/file1.c";
+        System.out.println("A" + testCase.substring(testCase.indexOf(" ")));
     }
 }
