@@ -18,7 +18,7 @@ import static com.google.common.collect.Maps.newHashMap;
  */
 public class MultipleThreadDownload {
 
-    static String STUDENT_INFO = "C:/students/studentInfo.txt";
+    static String STUDENT_INFO = "C:/test/students/studentInfo.txt";
     static String APP_PATH = "C:/test/apps";
     static String TEST_CASE = "C:/test/testCase/test.txt";
     static String RESULT_PATH = "C:/test/result";
@@ -75,38 +75,7 @@ public class MultipleThreadDownload {
         }
     }
 
-    /**
-     * 运行exe wc.exe -c -l -w ../../../../testCase/file1.c
-     *
-     * @param exe     可执行文件地址
-     * @param command 格式为：序号 -c -l -w ../../../../testCase/file1.c , 例如：1 c -l -w ../../../../testCase/file1.c
-     */
-    public static void doTest(String exe, String command) {
 
-        File executor = new File(exe);
-        if (!executor.exists()) {
-            System.out.println("无法获取可执行文件-->" + exe);
-            return;
-        }
-        Runtime rt = Runtime.getRuntime();
-        try {
-            // 获取测试用例序号，用于重命名测试生成的结果文件
-            String number = command.split(" ")[0];
-            String fullCommand = exe + command.substring(command.indexOf(" "));
-
-            System.out.println(fullCommand);
-            Process proc = rt.exec(fullCommand, null, new File(executor.getParent()));
-            proc.waitFor();
-
-            File result = new File(executor.getParent(), RESULT_FILE_NAME);
-
-            if (result.exists()) {
-                result.renameTo(new File(executor.getParent(), number + "_" + RESULT_FILE_NAME));
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public static Map<String, String> getStudentInfo() {

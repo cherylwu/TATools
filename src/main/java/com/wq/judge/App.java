@@ -23,7 +23,7 @@ public class App {
     static String APP_PATH = "C:/test/apps";
     static String ANSWER_PATH = "C:/test/answer";
     static String RESULT_PATH = "C:/test/result";
-    static String STUDENT_INFO = "C:/students/studentInfo.txt";
+    static String STUDENT_INFO = "C:/test/students/studentInfo.txt";
     static String TEST_CASE = "C:/test/testCase/test.txt";
 
     static Map<String, String> students = new HashMap<>();
